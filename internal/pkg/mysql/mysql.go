@@ -1,21 +1,35 @@
 package mysql
 
-import "github.com/jinzhu/gorm"
+import (
+	"demoProject/config"
+	"github.com/jinzhu/gorm"
+)
 
-func InitMysqlData() {
-	sqlconstr:="root:9624968Mi@(localhost)/goblog?charset=utf8mb4&parseTime=True&loc=Local"
-  	db,err:=gorm.Open("mysql",sqlconstr)
-  	if err!=nil {
-		panic("failed to connect database")
+func InitMysqlData()  *gorm.DB {
+	var   db  *gorm.DB
+	config,err:=config.GetConfig()
+	if err ==nil{
+		sqlcon:=config.MySqlConfig.Username+
+			":"+config.MySqlConfig.Password+
+			"@tcp("+config.MySqlConfig.Hostname+
+			")/"+config.MySqlConfig.Database
+		db,err=gorm.Open("mysql",sqlcon)
+		if err!=nil {
+			//异常抛出和记录异常
+			panic("failed to connect database")
+		}
+		defer  db.Close()
 	}
-  	defer  db.Close()
+	return db
 }
 
-func   InitAutoMgirate(...interface{}) {
-	gorm.DB.AutoMigrate()
+func  InitMigrate(data ...interface{})  {
+	///初始化数据库
+    db:=InitMysqlData()
+	db.AutoMigrate(data)
 }
-
 
 func MysqlClose() {
-	gorm.DB.Close()
+	db:=InitMysqlData()
+	db.Close()
 }

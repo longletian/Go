@@ -8,9 +8,3 @@ type Userinfo struct {
 	Email string  `form:"email",json:"email"`
 	Phone string  `form:"phone",json:"phone"`
 }
-
-func AddUser(userinfo Userinfo)(bool,error) {
-
-
-}
-

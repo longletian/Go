@@ -8,14 +8,15 @@ import (
 )
 
 //初始化日志
-func  InitLoger() *zap.Logger {
-	log:=config.GetConfig()
-	writeSyncer := getLogWriter(&log.LogConfig)
-	encoder := getEncoder()
-	core := zapcore.NewCore(encoder,writeSyncer,zapcore.ErrorLevel)
-	logger := zap.New(core, zap.AddCaller())
-	return logger
-
+func  InitLoger() (*zap.Logger,error) {
+	log,err:=config.GetConfig()
+	if err == nil {
+		writeSyncer := getLogWriter(&log.LogConfig)
+		encoder := getEncoder()
+		core := zapcore.NewCore(encoder,writeSyncer,zapcore.ErrorLevel)
+		logger := zap.New(core, zap.AddCaller())
+		return logger,nil
+	}
 }
 
 func  getEncoder()zapcore.Encoder  {

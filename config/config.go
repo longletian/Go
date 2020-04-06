@@ -29,14 +29,32 @@ type LogConfig struct {
 type  MySqlConfig struct {
 	Username string
 	Password string
-	Databasename string
-	Charsettype  string
+	Hostname string
+	Database string
+	Charset  string
 }
 
 //redis配置
 type RedisConfig struct {
+	//主机地址和端口 例192.168.1.2:6379
+	Address  string
+	//密码 可以为空
+	Password string
+	//数据库
+	Database int
+	//是否支持哨兵模式
+	SentryContect bool
+	SentryConfig SentryConfig
 
 }
+
+type  SentryConfig struct {
+	//名称
+	MasterName  string
+	//哨兵地址
+	SentinelAddrs []string
+}
+
 //mongodb配置
 type  MongoConfig struct {
 	
@@ -47,15 +65,6 @@ type VerifyCodeConfig struct {
 }
 
 //初始化获取配置文件
-func  GetConfig() *Config {
-    config :=Config{
-		MySqlConfig:      MySqlConfig{},
-		RedisConfig:      RedisConfig{},
-		MongoConfig:      MongoConfig{},
-		VerifyCodeConfig: VerifyCodeConfig{},
-		LogConfig:        LogConfig{
-			Path:"",
-		},
-	}
-    return  &config
+func  GetConfig() (*Config,error) {
+
 }
